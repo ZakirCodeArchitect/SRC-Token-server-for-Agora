@@ -6,6 +6,7 @@ node_modules/
 .env.local
 
 # Ignore package-lock file (optional, depending on your workflow)
+package.json
 package-lock.json
 
 # Ignore npm debug logs
