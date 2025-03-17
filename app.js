@@ -1,7 +1,10 @@
 const express = require('express');
 require('dotenv').config();
-const { RtcTokenBuilder, RtmTokenBuilder, RtcRole, RtmRole } = require('agora-access-token');
+const { RtcTokenBuilder, RtcRole } = require('agora-access-token');
 const { query, validationResult } = require('express-validator');
+const morgan = require('morgan');
+const rateLimit = require('express-rate-limit');
+const cors = require('cors');
 
 const app = express();
 const port = 3000;
@@ -10,7 +13,17 @@ const APP_ID = process.env.APP_ID;
 const APP_CERTIFICATE = process.env.APP_CERTIFICATE;
 const API_SECRET_KEY = process.env.API_SECRET_KEY;
 
+// Middleware
 app.use(express.json());
+app.use(morgan('combined')); // Logging
+app.use(cors()); // CORS support
+
+// Rate limiting
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // Limit each IP to 100 requests per windowMs
+});
+app.use(limiter);
 
 // Middleware for API key authentication
 const authenticate = (req, res, next) => {
@@ -55,8 +68,18 @@ app.get('/token-rtc', authenticate, [
   res.status(200).json({ token });
 });
 
-
-// Start the server
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
+// Global error handler
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ error: 'Something went wrong!' });
 });
+
+// Export the app instance
+module.exports = app;
+
+// Start the server only if this file is run directly
+if (require.main === module) {
+  app.listen(port, () => {
+    console.log(`Example app listening on port ${port}`);
+  });
+}
