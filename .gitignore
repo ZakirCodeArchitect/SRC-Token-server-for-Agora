@@ -1,0 +1,12 @@
+# Ignore Node.js dependencies
+node_modules/
+
+# Ignore environment files
+.env
+.env.local
+
+# Ignore package-lock file (optional, depending on your workflow)
+package-lock.json
+
+# Ignore npm debug logs
+npm-debug.log*
