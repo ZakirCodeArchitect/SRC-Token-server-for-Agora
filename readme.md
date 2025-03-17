@@ -38,7 +38,7 @@ This server generates secure Agora RTC tokens for video calling applications. It
 ### Steps
 1. **Clone the Repository**:
    ```bash
-   git clone https://github.com/ZakirCodeArchitect/nodejs-agora-token-server-example.git
+   git clone https://github.com/ZakirCodeArchitect/SRC-Token-server-for-Agora.git
    cd nodejs-agora-token-server-example
 
 2. **Installations**
